@@ -54,6 +54,16 @@ export class OrdersService {
     }
   }
 
+  async getByPaymentId(paymentId: number) {
+    try {
+      return await this.prisma.order.findUnique({
+        where: { paymentId },
+      });
+    } catch {
+      throw new BadRequestException();
+    }
+  }
+
   async deleteByPaymentId(paymentId: number) {
     try {
       return await this.prisma.order.delete({

@@ -9,5 +9,6 @@ import { ProductsModule } from 'src/products/products.module';
   imports: [PaymentsModule, PrismaModule, ProductsModule],
   controllers: [OrdersController],
   providers: [OrdersService],
+  exports: [OrdersService],
 })
-export class OrdersModule {}
+export class OrdersModule { }

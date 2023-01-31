@@ -18,6 +18,17 @@ export class StockService {
     }
   }
 
+  async getFirstStockItem(productId: number) {
+    try {
+      const stockItem = await this.prisma.stockItem.findFirst({
+        where: { productId },
+      });
+      return stockItem;
+    } catch {
+      throw new BadRequestException();
+    }
+  }
+
   async deleteOne(id: number) {
     try {
       return await this.prisma.stockItem.delete({
