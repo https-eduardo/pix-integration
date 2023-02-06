@@ -10,6 +10,7 @@ import { StockModule } from './stock/stock.module';
 import { OrdersModule } from './orders/orders.module';
 import { DiscordServersModule } from './discord/modules/servers/servers.module';
 import { DiscordChannelsModule } from './discord/modules/channels/channels.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { DiscordChannelsModule } from './discord/modules/channels/channels.modul
     OrdersModule,
     DiscordServersModule,
     DiscordChannelsModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

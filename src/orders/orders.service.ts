@@ -35,6 +35,7 @@ export class OrdersService {
         data: {
           authorDiscordId,
           product: { connect: { id: productId } },
+          email,
           paymentId: payment.id,
         },
       });

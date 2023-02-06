@@ -25,6 +25,7 @@ model Order {
   productId       Int
   status          String   @default("pending")
   authorDiscordId Int
+  email           String
   paymentId       Int      @unique
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
