@@ -32,6 +32,17 @@ export class ProductsService {
     }
   }
 
+  async findByDiscordId(discordId: string) {
+    try {
+      return await this.prisma.product.findMany({
+        where: { discordGuildId: discordId },
+        include: { stockItems: true },
+      });
+    } catch {
+      throw new NotFoundException();
+    }
+  }
+
   async updateOne(id: number, updateProductDto: UpdateProductDto) {
     try {
       return await this.prisma.product.update({
