@@ -15,7 +15,7 @@ model Order {
   product         Product? @relation(fields: [productId], references: [id])
   productId       Int
   status          String   @default("pending")
-  authorDiscordId Int
+  authorDiscordId String
   email           String
   paymentId       Int      @unique
   createdAt       DateTime @default(now())

@@ -7,7 +7,7 @@ export class PaymentsService {
   constructor() {
     mercadopago.configurations.setAccessToken(process.env.MP_ACCESS_TOKEN);
   }
-  async createPixTestPayment({
+  async createPixPayment({
     transaction_amount,
     payer_email,
     description,
@@ -23,6 +23,7 @@ export class PaymentsService {
     };
     return await mercadopago.payment.create(paymentData);
   }
+
   async getPaymentStatus(id: number) {
     return await mercadopago.payment.get(id);
   }
