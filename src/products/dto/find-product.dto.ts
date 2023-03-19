@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsNumber, IsPositive } from 'class-validator';
+import { IsNumber, IsString, IsPositive, IsNotEmpty } from 'class-validator';
 
 export class FindProductByIdDto {
   @IsNumber()
@@ -9,8 +9,7 @@ export class FindProductByIdDto {
 }
 
 export class FindProductsByDiscordIdDto {
-  @IsNumber()
-  @IsPositive()
-  @Transform(({ value }) => +value)
-  discordId: number;
+  @IsString()
+  @IsNotEmpty()
+  discordId: string;
 }

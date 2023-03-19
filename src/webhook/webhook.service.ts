@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Order } from '@prisma/client';
 import { MailService } from 'src/mail/mail.service';
 import { OrdersService } from 'src/orders/orders.service';
@@ -21,12 +21,11 @@ export class WebhookService {
       if (!order) return;
       const { response: paymentInfo } =
         await this.paymentsService.getPaymentStatus(id);
-      if (
-        order.status !== paymentInfo.status &&
-        paymentInfo.status === 'approved'
-      )
-        // Soon, this response gonna be used to make a request that sends the item to buyer.
-        return await this.handleProductDelivery(order);
+      // if (
+      //   order.status !== paymentInfo.status &&
+      //   paymentInfo.status === 'approved'
+      // )
+      return await this.handleProductDelivery(order);
     }
   }
   private async handleProductDelivery(order: Order) {
@@ -39,13 +38,17 @@ export class WebhookService {
     await this.ordersService.updateByPaymentId(order.paymentId, {
       status: 'approved',
     });
+    this.ordersService.notifyOrderFinish({
+      status: 'success',
+      authorDiscordId: order.authorDiscordId,
+    });
 
     this.mailService.sendMail({
       to: order.email,
       html: `<h1>Seus produtos chegaram! 😍</h1> 
       <h3>Dados dos produtos de seu pedido: </h3>
       <ul>
-        <li> ${stockItem.content}</li>
+        <li> 1x ${stockItem.product.name} - ${stockItem.content}</li>
       </ul>
       
       <footer><span>Obrigado por comprar usando nossa plataforma.</span></footer>`,

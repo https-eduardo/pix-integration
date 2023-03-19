@@ -22,6 +22,7 @@ export class StockService {
     try {
       const stockItem = await this.prisma.stockItem.findFirst({
         where: { productId },
+        include: { product: true },
       });
       return stockItem;
     } catch {

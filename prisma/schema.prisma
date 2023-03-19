@@ -10,47 +10,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model DiscordServer {
-  id        Int       @id @default(autoincrement())
-  name      String
-  license   String    @unique
-  discordId Int       @unique
-  channels  Channel[]
-  createdAt DateTime  @default(now())
-}
-
 model Order {
   id              Int      @id @default(autoincrement())
   product         Product? @relation(fields: [productId], references: [id])
   productId       Int
   status          String   @default("pending")
-  authorDiscordId Int
+  authorDiscordId String
   email           String
   paymentId       Int      @unique
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
 
-model Channel {
-  id              Int           @id @default(autoincrement())
-  name            String
-  product         Product?
-  productId       Int?          @unique
-  discordServer   DiscordServer @relation(fields: [discordServerId], references: [id])
-  discordServerId Int           @unique
-}
-
 model Product {
-  id           Int         @id @default(autoincrement())
-  name         String
-  description  String
-  price        Float
-  imageUrl     String?
-  instructions String?
-  stockItems   StockItem[]
-  channel      Channel     @relation(fields: [channelId], references: [id])
-  channelId    Int         @unique
-  Order        Order[]
+  id               Int         @id @default(autoincrement())
+  name             String
+  description      String
+  price            Float
+  imageUrl         String?
+  instructions     String?
+  stockItems       StockItem[]
+  discordChannelId String      @unique
+  discordGuildId   String
+  orders           Order[]
 }
 
 model StockItem {

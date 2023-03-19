@@ -8,8 +8,6 @@ import { ProductsModule } from './products/products.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { StockModule } from './stock/stock.module';
 import { OrdersModule } from './orders/orders.module';
-import { DiscordServersModule } from './discord/modules/servers/servers.module';
-import { DiscordChannelsModule } from './discord/modules/channels/channels.module';
 import { MailModule } from './mail/mail.module';
 
 @Module({
@@ -23,8 +21,6 @@ import { MailModule } from './mail/mail.module';
     PrismaModule,
     StockModule,
     OrdersModule,
-    DiscordServersModule,
-    DiscordChannelsModule,
     MailModule,
   ],
   controllers: [AppController],

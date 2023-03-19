@@ -1,4 +1,10 @@
-import { IsEmail, IsIn, IsNumber, IsPositive } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
 export type OrderStatus = 'pending' | 'approved' | 'canceled';
 
@@ -7,9 +13,9 @@ export class CreateOrderDto {
   @IsPositive()
   productId: number;
 
-  @IsNumber()
-  @IsPositive()
-  authorDiscordId: number;
+  @IsString()
+  @IsNotEmpty()
+  authorDiscordId: string;
 
   @IsEmail()
   email: string;

@@ -20,9 +20,13 @@ export class CreateProductDto {
   @IsPositive()
   price: number;
 
-  @IsNumber()
-  @IsPositive()
-  channelId: number;
+  @IsString()
+  @IsNotEmpty()
+  discordChannelId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  discordGuildId: string;
 
   @IsUrl()
   @IsOptional()

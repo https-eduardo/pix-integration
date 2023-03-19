@@ -8,6 +8,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ProductsService } from 'src/products/products.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import axios from 'axios';
 
 @Injectable()
 export class OrdersService {
@@ -24,12 +25,13 @@ export class OrdersService {
       if (!product || product.stockItems.length === 0)
         throw new NotFoundException();
 
-      const { response: payment } =
-        await this.paymentsService.createPixTestPayment({
+      const { response: payment } = await this.paymentsService.createPixPayment(
+        {
           description: product.description,
           transaction_amount: product.price,
           payer_email: email,
-        });
+        },
+      );
 
       return await this.prisma.order.create({
         data: {
@@ -38,6 +40,7 @@ export class OrdersService {
           email,
           paymentId: payment.id,
         },
+        include: { product: true },
       });
     } catch {
       throw new BadRequestException();
@@ -59,6 +62,7 @@ export class OrdersService {
     try {
       return await this.prisma.order.findUnique({
         where: { paymentId },
+        include: { product: true },
       });
     } catch {
       throw new BadRequestException();
@@ -73,5 +77,18 @@ export class OrdersService {
     } catch {
       throw new BadRequestException();
     }
+  }
+
+  async notifyOrderFinish({
+    status,
+    authorDiscordId,
+  }: {
+    status: string;
+    authorDiscordId: string;
+  }) {
+    return axios.post(`http://localhost:8080/order-finish`, {
+      status,
+      authorDiscordId,
+    });
   }
 }
