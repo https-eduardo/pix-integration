@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateStockItemDto } from 'src/stock/dto/create-stockitem.dto';
+import { CreateStockItemDto } from 'src/stock/dto/create-stock-item.dto';
+import { UpdateStockItemDto } from './dto/update-stock-item.dto';
 
 @Injectable()
 export class StockService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createStockItemDto: CreateStockItemDto) {
     const { productId, content } = createStockItemDto;
@@ -25,6 +26,25 @@ export class StockService {
         include: { product: true },
       });
       return stockItem;
+    } catch {
+      throw new BadRequestException();
+    }
+  }
+
+  async findOne(id: number) {
+    try {
+      return await this.prisma.stockItem.findUnique({ where: { id } });
+    } catch {
+      throw new BadRequestException();
+    }
+  }
+
+  async updateOne(id: number, updateStockItemDto: UpdateStockItemDto) {
+    try {
+      return await this.prisma.stockItem.update({
+        where: { id },
+        data: { ...updateStockItemDto },
+      });
     } catch {
       throw new BadRequestException();
     }
